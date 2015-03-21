@@ -35,7 +35,7 @@ shinyServer(function(input, output, session) {
     df <- filedata()
     if (is.null(df)) return(NULL)
     #items=names(df)
-	items=names(df)[c(3:8)] ### So that only numeric variables appear in drop down
+	items=names(df)[c(3:9)] ### So that only numeric variables appear in drop down
     names(items)=items
     selectInput("dependent","Select dependent variable from:",items, selectize = FALSE)
   })
@@ -45,7 +45,7 @@ shinyServer(function(input, output, session) {
     df <- filedata()
     if (is.null(df)) return(NULL)
     #items=names(df)
-	items=names(df)[2:8] ### So that only numeric variables appear in drop down
+	items=names(df)[2:9] ### So that only numeric variables appear in drop down
     names(items)=items
     selectInput("independents","Select independent variable(s) from:",items,multiple=TRUE, selectize = FALSE)
   })
@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
     df <- filedata()
     if (is.null(df)) return(NULL)
     #items=names(df)
-	items=names(df)[5:8] ### So that only numeric variables appear in drop down
+	items=names(df)[5:9] ### So that only numeric variables appear in drop down
     names(items)=items
     selectInput("percVar","Choose a WOD to compute your percentile:",items, selectize = FALSE)
   })
@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
     output$indRegion <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
-    items=names(df)[c(5:8)] ### So that only numeric variables appear in drop down
+    items=names(df)[c(5:9)] ### So that only numeric variables appear in drop down
     names(items)=items
     selectInput("indRegion","Choose WOD to analyze:",items, selectize = FALSE)
   })
@@ -210,7 +210,7 @@ shinyServer(function(input, output, session) {
     output$indCompare <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
-    items=names(df)[c(5:8)] ### So that only numeric variables appear in drop down
+    items=names(df)[c(5:9)] ### So that only numeric variables appear in drop down
     names(items)=items
     selectInput("indCompare","Find athletes who scored similar to me on this WOD:",items, selectize = FALSE)
   })
@@ -218,7 +218,7 @@ shinyServer(function(input, output, session) {
 	output$depCompare <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
-    items=names(df)[c(5:8)] ### So that only numeric variables appear in drop down
+    items=names(df)[c(5:9)] ### So that only numeric variables appear in drop down
     drop <- which(items== input$indCompare)
     items=items[-drop] ### I do this so that the WOD chosen as indCompare is dropped from this list
     names(items)=items
@@ -272,7 +272,7 @@ shinyServer(function(input, output, session) {
     	input$RC
     	 isolate({   
       		df <- filedata()
-      		vars <- c('score15.1', 'score15.1A', 'score15.2', 'score15.3')
+      		vars <- c('score15.1', 'score15.1A', 'score15.2', 'score15.3', 'score15.4')
       		if (is.null(df)) return(NULL)
       		tmp <- subset(df, Competitor == input$RCname & region == input$region) 
 			r1 <- apply(df[, vars], 2, mean, na.rm = TRUE)
@@ -280,7 +280,7 @@ shinyServer(function(input, output, session) {
 			rr <- apply(tmp2[, vars], 2, mean, na.rm = TRUE)
 			r2 <- tmp[, vars]
 			r3 <- rbind(r1, rr, r2)
-			names(r3) <- c('15.1', '15.1A', '15.2', '15.3')
+			names(r3) <- c('15.1', '15.1A', '15.2', '15.3', '15.4')
 			rownames(r3) <- c('World Average', paste(input$region, 'Average'), tmp$Competitor)
 			r3
       	})
@@ -341,6 +341,14 @@ shinyServer(function(input, output, session) {
 	r3 <- reportCard()
 	aa <- barplot(t(r3)[4,], beside = TRUE, col = c('blue', 'green', 'red'), ylim = c(0, max(r3[,4], na.rm=TRUE)+100), main = 'Your Performance on Open 15.3') 
 	xx <- r3[,4]
+	text(cex= 1.5, x= aa, y= xx + par("cxy")[2]/2 + 10, round(xx,2), xpd=TRUE)
+  })
+  
+    output$barplot5 <- renderPlot({
+	input$RC
+	r3 <- reportCard()
+	aa <- barplot(t(r3)[5,], beside = TRUE, col = c('blue', 'green', 'red'), ylim = c(0, max(r3[,5], na.rm=TRUE)+100), main = 'Your Performance on Open 15.4') 
+	xx <- r3[,5]
 	text(cex= 1.5, x= aa, y= xx + par("cxy")[2]/2 + 10, round(xx,2), xpd=TRUE)
   })
   
