@@ -81,7 +81,8 @@ tabPanel(span("My Report Card", style = "color:blue"),
 	plotOutput('barplot2'),
 	plotOutput('barplot3'),
 	plotOutput('barplot4'),
-	plotOutput('barplot5')
+	plotOutput('barplot5'),
+	plotOutput('barplot6')
 	)
  ) 
 ), # end tabpanel for basic statistics 
